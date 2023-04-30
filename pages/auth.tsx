@@ -1,6 +1,7 @@
 import Input from "@/components/Input";
 import axios from "axios";
 import { signIn } from "next-auth/react";
+import { useRouter } from "next/router";
 import { useCallback, useState } from "react";
 import { FcGoogle } from "react-icons/fc";
 
@@ -8,7 +9,7 @@ export default function Auth() {
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
-
+  const router = useRouter();
   const [variant, setVariant] = useState<"login" | "register">("login");
 
   const toggleVariant = useCallback(() => {
@@ -20,9 +21,10 @@ export default function Auth() {
       await signIn("credentials", {
         email,
         password,
-
-        callbackUrl: "/profiles",
+        // callbackUrl: "/profiles",
+        redirect: false,
       });
+      router.push("/profiles");
     } catch (error) {
       console.log(error);
     }
